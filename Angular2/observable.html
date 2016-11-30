@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Observable</title>
+  </head>
+  <!-- 3. Display the application -->
+<body>
+  <button id="mybutton">Hi</button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.js"></script>
+  <script>
+    let button = document.getElementById('mybutton');
+    let sayHi = function() {
+      console.log('Hi!');
+    }
+
+    const Observable = Rx.Observable;
+    const clicks = Observable.fromEvent(button, 'click');
+
+    const sub = clicks.forEach(
+      e => {
+        console.log(e);
+        sayHi();
+        sub.dispose();
+      },
+      err => { console.log(err); }
+    );
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Angular 2",
+    "image": "http://platzi.josueggh.com/angular.png",
+    "instructor": "Anguar2_instructor",
+    "price": 100
+  },
+  {
+    "id": 2,
+    "name": "Phyton",
+    "image": "http://platzi.josueggh.com/phyton.png",
+    "instructor": "Phyton_instructor",
+    "price": 90
+  },
+  {
+    "id": 3,
+    "name": "Phyton2",
+    "image": "http://platzi.josueggh.com/phyton.png",
+    "instructor": "Python2_instructor",
+    "price": 100
+  }
+]
