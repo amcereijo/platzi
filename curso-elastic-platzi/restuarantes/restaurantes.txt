@@ -1,0 +1,306 @@
+PUT  http://localhost:9200/restaurantes
+  {
+    "mappings": {
+      "properties": {
+        "nombre": { "type": "text"},
+        "categorias": {
+          "type": "nested",
+          "properties": {
+            "nombre": {"type": "keyword"},
+            "principal": {"type": "boolean"}
+          }
+        }
+      }
+    }
+  }
+
+PUT  http://localhost:9200/restaurantes/_doc/1
+  {
+    "nombre": "McDonals",
+    "categorias": [
+      {"nombre": "Comida rapida", "principal": true},
+      {"nombre": "Desayunos", "principal": false},
+      {"nombre": "Hamburguesa", "principal": false}
+    ]
+  }
+PUT  http://localhost:9200/restaurantes/_doc/2
+  {
+    "nombre": "Burguer king",
+    "categorias": [
+      {"nombre": "Comida rapida", "principal": false},
+      {"nombre": "Desayunos", "principal": true}
+    ]
+  }
+
+  PUT  http://localhost:9200/restaurantes/_doc/3
+  {
+    "nombre": "Subway",
+    "categorias": [
+      {"nombre": "Comida saludable", "principal": false},
+      {"nombre": "Sandwiches", "principal": true}
+    ]
+  }
+
+  Consultas anidadas (nested)
+
+  GET http://localhost:9200/restaurantes/_search
+  {
+    "query": {
+      "nested": {
+        "path": "categorias",
+        "query": {
+          "bool": {
+            "must": {
+              "term": {"categorias.nombre": "Comida saludable"}
+            }
+          }
+        }
+      }
+    }
+  }
+
+  {
+    "query": {
+      "nested": {
+        "path": "categorias",
+        "query": {
+          "bool": {
+            "must": {
+              "term": {"categorias.nombre": "Comida rapida"}
+            }
+          }
+        }
+      }
+    }
+  }
+
+  {
+    "query": {
+      "nested": {
+        "path": "categorias",
+        "query": {
+          "bool": {
+            "must": [
+              {"term": {"categorias.nombre": "Comida rapida"}},
+              {"term": {"categorias.principal": true}}
+            ]
+          }
+        }
+      }
+    }
+  }
+
+GET http://localhost:9200/restaurantes/_mapping
+
+GET http://localhost:9200/platos/_mapping
+GET http://localhost:9200/platos/_search
+
+
+PUT http://localhost:9200/restaurantes/_mapping
+{
+  "properties": {
+    "calificacion": { "type": "double"},
+    "direccion": { "type": "text"},
+    "platos": {
+      "type": "nested",
+      "properties": {
+        "descripcion": {
+            "type": "text"
+        },
+        "estado": {
+            "type": "keyword"
+        },
+        "nombre": {
+            "type": "text"
+        },
+        "pedidosUltimaHora": {
+            "type": "integer"
+        }
+      }
+    },
+    "ultimaModificacion": {
+        "properties": {
+            "fecha": {
+                "type": "date"
+            },
+            "usuario": {
+                "type": "text"
+            }
+        }
+    }
+  }
+}
+
+POST http://localhost:9200/restaurantes/_update/1
+{
+  "doc": {
+    "calificacion": 4.22,
+    "direccion": "Calle Primera, Barrio Centro",
+    "platos": [
+      {
+        "nombre": "Bowl Picante",
+        "descripcion": "Pollo, salsa picante, frijoles, platano y aguacate",
+        "estado": "activo",
+        "pedidosUltimaHora": 42
+      }
+    ],
+    "ultimaModificacion": {
+        "usuario": "rick@gmail.com",
+        "fecha": "2020-02-19"
+      }
+  }
+}
+
+POST http://localhost:9200/restaurantes/_update/2
+{
+  "doc": {
+    "calificacion": 3.75,
+    "direccion": "Calle Segunda, Barrio Occidental",
+    "platos": [
+    {
+        "nombre": "Nachos XL",
+        "descripcion": "Nachos con carne, guacamole, pico de gallo, salsa picante y queso",
+        "estado": "activo",
+        "pedidosUltimaHora": 11
+      }
+    ],
+    "ultimaModificacion": {
+      "usuario": "jerryk@gmail.com",
+      "fecha": "2020-03-21"
+    }
+  }
+}
+
+POST http://localhost:9200/restaurantes/_update/3
+{
+  "doc": {
+    "direccion": "Calle Tercera, Barrio Norte",
+    "platos": [
+      {
+        "nombre": "Ensaladisima",
+        "descripcion": "Aceitunas, cebolla, queso, aguacate (saludable)",
+        "estado": "activo",
+        "pedidosUltimaHora": 0
+      }
+    ],
+    "ultimaModificacion": {
+      "usuario": "rick@gmail.com",
+      "fecha": "2020-01-22"
+    }
+  }
+}
+
+
+Busquedas de rangosy agregaciones
+  Rango por número limitando campos
+  GET http://localhost:9200/restaurantes/_search
+    {
+      "_source": ["nombre", "calificacion"],
+      "query": {
+        "range": {
+          "calificacion": {
+            "gt": 3.5,
+            "lte": 4.5
+          }
+        }
+      }
+    }
+
+  Rango por fecha limitando campos
+  GET http://localhost:9200/restaurantes/_search
+    {
+      "_source": ["nombre", "ultimaModificacion.fecha"],
+      "query": {
+        "range": {
+          "ultimaModificacion.fecha": {
+            "gte": "2020-01-15",
+            "lt": "2020-03-01"
+          }
+        }
+      }
+    }
+
+  Agregaciones (métricas y cálculos)
+   GET http://localhost:9200/restaurantes/_search
+    {
+      "aggs": {
+        "calificacionPromedio": {"avg": {"field": "calificacion"}},
+        "calificacionMaxima": {"max": {"field": "calificacion"}},
+        "calificacionMinima": {"min": {"field": "calificacion"}}
+      }
+    }
+
+    Agregración con valor por defecto
+    GET http://localhost:9200/restaurantes/_search
+    {
+      "aggs": {
+        "calificacionPromedio": {"avg": {
+          "field": "calificacion",
+          "missing": 3.0
+          }},
+        "calificacionMaxima": {"max": {"field": "calificacion"}},
+        "calificacionMinima": {"min": {"field": "calificacion"}}
+      }
+    }
+
+
+
+    GET http://localhost:9200/restaurantes/_search
+    {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "match": {
+                      "direccion": "centro"
+                    }
+                  },
+                  {
+                    "match": {
+                      "direccion": "Occidental"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "nested": {
+                      "path": "categorias",
+                      "query": {
+                        "bool": {
+                          "must": {
+                            "term": {
+                              "categorias.nombre": "Comida rapida"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "nested": {
+                      "path": "platos",
+                      "query": {
+                        "bool": {
+                        "must": {
+                          "match": {
+                            "descripcion": "Nachos"
+                          }
+                        }
+                      }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }

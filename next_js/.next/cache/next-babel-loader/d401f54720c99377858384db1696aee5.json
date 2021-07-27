@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React from \"react\";\nimport { useRouter } from \"next/router\";\n\nvar ProductItem = function ProductItem() {\n  var router = useRouter();\n  return __jsx(\"div\", null, __jsx(\"h1\", null, \"P\\xE1gina producto \", router.query.id));\n};\n\nexport default ProductItem;","map":null,"metadata":{},"sourceType":"module"}
