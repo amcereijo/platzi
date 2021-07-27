@@ -1,0 +1,1 @@
+{"version":3,"file":"brand.dtos.js","sourceRoot":"","sources":["../../../src/products/dtos/brand.dtos.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA8D;AAC9D,6CAA2D;AAE3D,MAAa,cAAc;CAU1B;AANC;IAHC,0BAAQ,EAAE;IACV,4BAAU,EAAE;IACZ,qBAAW,EAAE;;4CACQ;AAKtB;IAHC,uBAAK,EAAE;IACP,4BAAU,EAAE;IACZ,qBAAW,EAAE;;6CACS;AATzB,wCAUC;AAED,MAAa,cAAe,SAAQ,qBAAW,CAAC,cAAc,CAAC;CAAG;AAAlE,wCAAkE"}

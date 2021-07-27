@@ -1,0 +1,40 @@
+POSTMAN
+ -> crear con indice propio
+  PUT http://localhost:9200/usuarios/_doc/1
+    { "nombre": "nombre", "apellido": "surname" }
+-> crear con indice generado
+  POST http://localhost:9200/usuarios/_doc/
+  { "nombre": "Name surname" }
+
+-> Crear con archivo en modo bulk
+  POST http://localhost:9200/usuarios/_bulk
+    binay => usuarios.json
+
+-> Busqueda en indice
+  GET http://localhost:9200/usuarios/_search
+
+-> Busqueda en indice con id 1
+  GET http://localhost:9200/usuarios/_doc/1 => con metadatos
+  GET http://localhost:9200/usuarios/_source/1 => sin metadatos
+
+-> Busqueda en indice campos
+  GET http://localhost:9200/usuarios/_mapping
+
+-> añadir datos
+  PUT http://localhost:9200/usuarios/_doc/1
+     { "edad": 60 }
+
+-> Modificar
+  POST http://localhost:9200/usuarios/_update/1
+  {
+    "doc": {
+      "nombre":"Rick",
+      "apellido": "Sanchez",
+      "edad": 50
+    }
+  }
+
+-> Borrar elemento
+  DELETE http://localhost:9200/usuarios/_doc/1
+-> Borrar indice completo
+  DELETE http://localhost:9200/usuarios/

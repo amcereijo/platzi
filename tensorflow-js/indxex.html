@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Modelo Regresion</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+  </head>
+  <body>
+    <script src="script.js"></script>
+    JsonFile: <input type="file"  id="upload-json"/><br/>
+    Binary file <input type="file"  id="upload-binary"/><br/>
+    <input type="button" value="Cargar modelo" onclick="cargarModelo()"/><br/>
+
+    <input type="button" value="Detener entrenamiento" onclick="detenerEntrenamiento()"/><br/>
+    <input type="button" value="Guardar modelo" onclick="guardarModelo()"/><br/><br/>
+
+    <input type="button" value="Ver inferencia" onclick="verCurvaInferencia()"/><br/><br/>
+  </body>
+</html>

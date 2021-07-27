@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React from \"react\";\nimport NavBar from \"../components/NavBar\";\n\nvar Home = function Home() {\n  return __jsx(\"div\", null, __jsx(NavBar, null), __jsx(\"p\", null, \"Hola\"));\n};\n\nexport default Home;","map":null,"metadata":{},"sourceType":"module"}
